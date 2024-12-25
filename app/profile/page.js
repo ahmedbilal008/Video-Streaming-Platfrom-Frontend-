@@ -1,12 +1,22 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, Suspense } from 'react';
 import Link from 'next/link';
 import { useSearchParams, useRouter } from 'next/navigation';
 import Navbar from '../components/Navbar';
 import useApi from '../hooks/useApi';
 
 export default function Profile() {
+  return (
+    <Suspense fallback={<div className="min-h-screen bg-gray-100 flex items-center justify-center">
+      <div className="animate-spin rounded-full h-32 w-32 border-t-2 border-b-2 border-blue-500"></div>
+    </div>}>
+      <ProfileContent />
+    </Suspense>
+  );
+}
+
+function ProfileContent() {
   const [user, setUser] = useState(null);
   const [videos, setVideos] = useState([]);
   const [currentPage, setCurrentPage] = useState(0);
@@ -14,7 +24,7 @@ export default function Profile() {
   const searchParams = useSearchParams();
   const userID = searchParams.get('id');
   const router = useRouter();
-  const limit = 16;
+  const limit = 4;
   const { callApi, LoadingComponent, ErrorComponent } = useApi();
 
   useEffect(() => {
