@@ -19,9 +19,10 @@ export default function Dashboard() {
   const { callApi, LoadingComponent, ErrorComponent } = useApi();
 
   useEffect(() => {
-    const token = document.cookie.split(';').find(c => c.trim().startsWith('token='))
+    //const token = document.cookie.split(';').find(c => c.trim().startsWith('token='))
+    const token = sessionStorage.getItem('authToken');
     if (token) {
-      fetchUserDataFromCookie(token)
+      //fetchUserDataFromCookie(token)
       fetchData()
     } else {
       router.push('/')
@@ -41,7 +42,7 @@ export default function Dashboard() {
     await Promise.all([
       fetchVideos(),
       fetchStorageUsage(),
-      fetchBandwidthUsage()
+      //fetchBandwidthUsage()
     ]);
   };
 
@@ -63,9 +64,13 @@ export default function Dashboard() {
 
   const fetchStorageUsage = async () => {
     const result = await callApi(async () => {
+      const token = sessionStorage.getItem('authToken');
       const response = await fetch(`${process.env.NEXT_PUBLIC_STORAGE_SERVICE_URL}/api/storage/usage`, {
         method: 'GET',
-        credentials: 'include',
+        //credentials: 'include',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+      },
       });
       if (!response.ok) throw new Error('Failed to fetch storage usage');
       return response.json();

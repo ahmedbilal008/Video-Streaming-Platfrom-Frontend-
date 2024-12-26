@@ -23,13 +23,15 @@ export default function Login() {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({ email, password }),
-        credentials: 'include',
+        //credentials: 'include',
       })
       if (response.ok) {
-        router.push('/dashboard')
+        const { token } = await response.json();
+        sessionStorage.setItem('authToken', token);
+        router.push('/dashboard');
       } else {
-        const data = await response.json()
-        setError(data.message || 'Login failed')
+        const data = await response.json();
+        setError(data.message || 'Login failed');
       }
     } catch (error) {
       setError('An error occurred during login')
@@ -68,7 +70,7 @@ export default function Login() {
             </div>
             {error && <p className="text-red-500 mt-2">{error}</p>}
             <div className="flex items-baseline justify-between">
-              <button 
+              <button
                 className="px-6 py-2 mt-4 text-white bg-blue-600 rounded-lg hover:bg-blue-900"
                 disabled={isLoading}
               >
