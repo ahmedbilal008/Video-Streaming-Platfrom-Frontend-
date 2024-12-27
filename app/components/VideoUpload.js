@@ -23,6 +23,13 @@ export default function VideoUpload({ onUploadSuccess, storageUsage, bandwidthUs
       return;
     }
 
+    const maxFileSizeMb = 50; // Maximum file size in MB
+    const maxFileSizeBytes = maxFileSizeMb * 1024 * 1024; // Convert MB to bytes
+    if (file.size > maxFileSizeBytes) {
+      setUploadStatus(`Please choose a file smaller than ${maxFileSizeMb} MB.`);
+      return;
+    }
+
     // Check storage limit
     if (storageUsage && storageUsage.usagePercentage >= 100) {
       setUploadStatus('Storage limit reached. Please delete some videos before uploading.');
@@ -56,7 +63,6 @@ export default function VideoUpload({ onUploadSuccess, storageUsage, bandwidthUs
 
       if (response.ok) {
         const data = await response.json();
-        console.log('Upload successful:', data);
         setUploadStatus('Video uploaded successfully!');
         onUploadSuccess(); // Call this to refresh the dashboard
         setFile(null); // Reset the file input
@@ -64,7 +70,7 @@ export default function VideoUpload({ onUploadSuccess, storageUsage, bandwidthUs
       } else {
         const errorData = await response.json();
         setUploadStatus('Failed to upload video: ' + (errorData.message || 'Unknown error'));
-        
+
         if (errorData.message.includes('Exceeding total storage limit')) {
           setUploadStatus('Exceeding storage limit. Please delete some videos or upload a smaller file.');
         } else if (errorData.message.includes('Exceeding daily bandwidth limit')) {
@@ -78,8 +84,8 @@ export default function VideoUpload({ onUploadSuccess, storageUsage, bandwidthUs
     }
   };
 
-  const isUploadDisabled = !file || !title.trim() || isUploading || 
-    (storageUsage && storageUsage.usagePercentage >= 100) || 
+  const isUploadDisabled = !file || !title.trim() || isUploading ||
+    (storageUsage && storageUsage.usagePercentage >= 100) ||
     (bandwidthUsage && bandwidthUsage.totalUsageMb >= bandwidthUsage.dailyLimitMb);
 
   return (
@@ -118,13 +124,12 @@ export default function VideoUpload({ onUploadSuccess, storageUsage, bandwidthUs
         {isUploading ? 'Uploading...' : 'Upload Video'}
       </button>
       {uploadStatus && (
-        <p className={`mt-2 text-sm ${
-          uploadStatus.includes('successfully') 
-            ? 'text-green-600' 
-            : uploadStatus.includes('Uploading') 
-              ? 'text-blue-600' 
+        <p className={`mt-2 text-sm ${uploadStatus.includes('successfully')
+            ? 'text-green-600'
+            : uploadStatus.includes('Uploading')
+              ? 'text-blue-600'
               : 'text-red-600'
-        }`}>
+          }`}>
           {uploadStatus}
         </p>
       )}

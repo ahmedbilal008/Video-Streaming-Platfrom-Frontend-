@@ -109,7 +109,7 @@ function LogsContent() {
                     <table className="min-w-full bg-white shadow-md rounded-lg overflow-hidden">
                         <thead className="bg-gray-200">
                             <tr>
-                                <th className="px-4 py-3 text-left">User ID</th>
+                                {isAdmin && <th className="px-4 py-3 text-left">User ID</th>}
                                 <th className="px-4 py-3 text-left">Action Type</th>
                                 <th className="px-4 py-3 text-left">Service Name</th>
                                 <th className="px-4 py-3 text-left">Description</th>
@@ -119,7 +119,7 @@ function LogsContent() {
                         <tbody>
                             {logs.map((log, index) => (
                                 <tr key={index} className={index % 2 === 0 ? 'bg-gray-50' : 'bg-white'}>
-                                    <td className="px-4 py-3">{log.user_id}</td>
+                                    {isAdmin && <td className="px-4 py-3">{log.user_id}</td>}
                                     <td className="px-4 py-3">{log.action_type}</td>
                                     <td className="px-4 py-3">{log.service_name}</td>
                                     <td className="px-4 py-3">{log.description}</td>

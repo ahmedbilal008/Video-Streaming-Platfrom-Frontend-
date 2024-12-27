@@ -60,13 +60,11 @@ const Navbar = ({ currentPage }) => {
         // Decode the JWT payload (base64-decode)
         const decodedToken = JSON.parse(atob(token.split('.')[1]));
         setUser({ id: decodedToken.id, username: decodedToken.email }); // Update the user state
-        console.log('Decoded token:', decodedToken.id, decodedToken.email); // Log the decoded details for debugging
       } else {
         setError('Token not found in session storage');
       }
     } catch (error) {
       setError('Failed to parse user data from token');
-      console.error('Error decoding token:', error.message); // Log error details for debugging
     }
   };
   

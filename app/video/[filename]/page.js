@@ -19,13 +19,10 @@ export default function VideoPage() {
           },
           //credentials: 'include',
         })
-        console.log(response);
         if (response.ok) {
           const data = await response.json(); 
           setVideoUrl(data.url)
-        } else {
-          console.error('Failed to fetch video URL')
-        }
+        } 
       } catch (error) {
         console.error('Error fetching video URL:', error)
       }

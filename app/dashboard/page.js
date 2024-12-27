@@ -29,15 +29,6 @@ export default function Dashboard() {
     }
   }, [currentPage])
 
-  // const fetchUserDataFromCookie = (token) => {
-  //   try {
-  //     const decodedToken = JSON.parse(atob(token.split('=')[1].split('.')[1]))
-  //     setUser({ id: decodedToken.id, username: decodedToken.email })
-  //   } catch (error) {
-  //     console.error('Failed to parse user data from token')
-  //   }
-  // }
-
   const fetchUserDataFromToken = (token) => {
     try {
       if (!token) throw new Error('Token not found');
@@ -46,12 +37,10 @@ export default function Dashboard() {
       const decodedToken = JSON.parse(atob(token.split('.')[1]));
       const now = Math.floor(Date.now() / 1000); // Current time in seconds
       if (decodedToken.exp && decodedToken.exp < now) {
-        console.error('Token has expired');
         router.push('/');
       }
       setUser({ id: decodedToken.id, username: decodedToken.email });
     } catch (error) {
-      console.error('Error decoding token:', error.message);
       router.push('/'); // Redirect if invalid token
     }
   };
