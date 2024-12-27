@@ -44,9 +44,13 @@ function ProfileContent() {
 
   const fetchUserData = async () => {
     const result = await callApi(async () => {
+      const token = sessionStorage.getItem('authToken');
       const response = await fetch(`${process.env.NEXT_PUBLIC_USER_SERVICE_URL}/api/users/user/${userID}`, {
         method: 'GET',
-        credentials: 'include',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+        },
+        //credentials: 'include',
       });
       if (!response.ok) throw new Error('Failed to fetch user data');
       return response.json();
@@ -57,9 +61,13 @@ function ProfileContent() {
   const fetchUserVideos = async () => {
     const start = currentPage * limit;
     const result = await callApi(async () => {
+      const token = sessionStorage.getItem('authToken');
       const response = await fetch(`${process.env.NEXT_PUBLIC_VIDEO_SERVICE_URL}/api/videos/user/${userID}?start=${start}`, {
         method: 'GET',
-        credentials: 'include',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+        },
+        //credentials: 'include',
       });
       if (!response.ok) throw new Error('Failed to fetch videos');
       return response.json();
@@ -72,9 +80,13 @@ function ProfileContent() {
 
   const handleDeleteVideo = async (filename) => {
     await callApi(async () => {
+      const token = sessionStorage.getItem('authToken');
       const response = await fetch(`${process.env.NEXT_PUBLIC_VIDEO_SERVICE_URL}/api/videos/delete/${filename}`, {
         method: 'DELETE',
-        credentials: 'include',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+        },
+        //credentials: 'include',
       });
       if (!response.ok) throw new Error('Failed to delete video');
     });
@@ -83,9 +95,13 @@ function ProfileContent() {
 
   const handleDeleteAllVideos = async () => {
     await callApi(async () => {
+      const token = sessionStorage.getItem('authToken');
       const response = await fetch(`${process.env.NEXT_PUBLIC_VIDEO_SERVICE_URL}/api/videos/delete-all`, {
         method: 'DELETE',
-        credentials: 'include',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+        },
+        //credentials: 'include',
       });
       if (!response.ok) throw new Error('Failed to delete all videos');
     });

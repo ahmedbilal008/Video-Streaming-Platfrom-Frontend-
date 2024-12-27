@@ -9,46 +9,70 @@ const Navbar = ({ currentPage }) => {
   const [error, setError] = useState(null);
   const router = useRouter(); // Initialize router for programmatic navigation
 
-  // Logout Function
-  const handleLogout = async () => {
-    try {
-      const response = await fetch(`${process.env.NEXT_PUBLIC_USER_SERVICE_URL}/api/users/logout`, {
-        method: 'POST',
-        credentials: 'include', // Include cookies for authentication
-      });
+  // // Logout Function
+  // const handleLogout = async () => {
+  //   try {
+  //     const response = await fetch(`${process.env.NEXT_PUBLIC_USER_SERVICE_URL}/api/users/logout`, {
+  //       method: 'POST',
+  //       credentials: 'include', // Include cookies for authentication
+  //     });
 
-      if (response.ok) {
-        router.push('/login'); // Redirect to the login page
-      } else {
-        throw new Error('Logout failed');
-      }
-    } catch (error) {
-      setError('Failed to logout');
-    }
+  //     if (response.ok) {
+  //       router.push('/login'); // Redirect to the login page
+  //     } else {
+  //       throw new Error('Logout failed');
+  //     }
+  //   } catch (error) {
+  //     setError('Failed to logout');
+  //   }
+  // };
+
+  const handleLogout = () => {
+    sessionStorage.removeItem('authToken'); // Clear token from session storage
+    router.push('/'); // Redirect to the login page
   };
+  
+  // // Fetch user data from cookie (JWT token)
+  // const fetchUserDataFromCookie = () => {
+  //   try {
+  //     const token = document.cookie
+  //       .split('; ')
+  //       .find((row) => row.startsWith('token='))
+  //       ?.split('=')[1];
 
-  // Fetch user data from cookie (JWT token)
-  const fetchUserDataFromCookie = () => {
+  //     if (token) {
+  //       const decodedToken = JSON.parse(atob(token.split('.')[1]));
+  //       setUser({ id: decodedToken.id, username: decodedToken.email });
+  //       console.log('Decoded token:', decodedToken.id, decodedToken.email);
+  //     } else {
+  //       setError('Token not found');
+  //     }
+  //   } catch (error) {
+  //     setError('Failed to parse user data from token');
+  //   }
+  // };
+
+  const fetchUserDataFromSession = () => {
     try {
-      const token = document.cookie
-        .split('; ')
-        .find((row) => row.startsWith('token='))
-        ?.split('=')[1];
-
+      const token = sessionStorage.getItem('authToken'); // Retrieve token from session storage
+  
       if (token) {
+        // Decode the JWT payload (base64-decode)
         const decodedToken = JSON.parse(atob(token.split('.')[1]));
-        setUser({ id: decodedToken.id, username: decodedToken.email });
-        console.log('Decoded token:', decodedToken.id, decodedToken.email);
+        setUser({ id: decodedToken.id, username: decodedToken.email }); // Update the user state
+        console.log('Decoded token:', decodedToken.id, decodedToken.email); // Log the decoded details for debugging
       } else {
-        setError('Token not found');
+        setError('Token not found in session storage');
       }
     } catch (error) {
       setError('Failed to parse user data from token');
+      console.error('Error decoding token:', error.message); // Log error details for debugging
     }
   };
+  
 
   useEffect(() => {
-    fetchUserDataFromCookie();
+    fetchUserDataFromSession();
   }, []);
 
   return (

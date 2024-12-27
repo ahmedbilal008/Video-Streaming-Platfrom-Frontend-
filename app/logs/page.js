@@ -36,9 +36,13 @@ function LogsContent() {
 
     const checkAdminStatus = async (userID) => {
         const result = await callApi(async () => {
+            const token = sessionStorage.getItem('authToken');
             const response = await fetch(`${process.env.NEXT_PUBLIC_USER_SERVICE_URL}/api/users/user/${userID}`, {
                 method: 'GET',
-                credentials: 'include',
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                },
+                //credentials: 'include',
             });
             if (!response.ok) throw new Error('Failed to fetch user data');
             return response.json();
@@ -55,9 +59,13 @@ function LogsContent() {
             : `${process.env.NEXT_PUBLIC_LOGGING_SERVICE_URL}/api/logs/user/${userID}?start=${start}`;
         
         const result = await callApi(async () => {
+            const token = sessionStorage.getItem('authToken');
             const response = await fetch(endpoint, {
                 method: 'GET',
-                credentials: 'include',
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                },
+                //credentials: 'include',
             });
             if (!response.ok) throw new Error('Failed to fetch logs');
             return response.json();

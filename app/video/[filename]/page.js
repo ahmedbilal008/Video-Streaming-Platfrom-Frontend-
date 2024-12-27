@@ -11,9 +11,13 @@ export default function VideoPage() {
   useEffect(() => {
     const fetchVideoUrl = async () => {
       try {
+        const token = sessionStorage.getItem('authToken');
         const response = await fetch(`${process.env.NEXT_PUBLIC_VIDEO_SERVICE_URL}/api/videos/stream/${filename}`, {
           method: 'GET',
-          credentials: 'include',
+          headers: {
+            'Authorization': `Bearer ${token}`,
+          },
+          //credentials: 'include',
         })
         console.log(response);
         if (response.ok) {

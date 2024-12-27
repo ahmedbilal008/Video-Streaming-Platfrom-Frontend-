@@ -22,36 +22,58 @@ export default function Dashboard() {
     //const token = document.cookie.split(';').find(c => c.trim().startsWith('token='))
     const token = sessionStorage.getItem('authToken');
     if (token) {
-      //fetchUserDataFromCookie(token)
+      fetchUserDataFromToken(token)
       fetchData()
     } else {
       router.push('/')
     }
   }, [currentPage])
 
-  const fetchUserDataFromCookie = (token) => {
+  // const fetchUserDataFromCookie = (token) => {
+  //   try {
+  //     const decodedToken = JSON.parse(atob(token.split('=')[1].split('.')[1]))
+  //     setUser({ id: decodedToken.id, username: decodedToken.email })
+  //   } catch (error) {
+  //     console.error('Failed to parse user data from token')
+  //   }
+  // }
+
+  const fetchUserDataFromToken = (token) => {
     try {
-      const decodedToken = JSON.parse(atob(token.split('=')[1].split('.')[1]))
-      setUser({ id: decodedToken.id, username: decodedToken.email })
+      if (!token) throw new Error('Token not found');
+  
+      // Decode JWT payload (base64-decode)
+      const decodedToken = JSON.parse(atob(token.split('.')[1]));
+      const now = Math.floor(Date.now() / 1000); // Current time in seconds
+      if (decodedToken.exp && decodedToken.exp < now) {
+        console.error('Token has expired');
+        router.push('/');
+      }
+      setUser({ id: decodedToken.id, username: decodedToken.email });
     } catch (error) {
-      console.error('Failed to parse user data from token')
+      console.error('Error decoding token:', error.message);
+      router.push('/'); // Redirect if invalid token
     }
-  }
+  };
 
   const fetchData = async () => {
     await Promise.all([
       fetchVideos(),
       fetchStorageUsage(),
-      //fetchBandwidthUsage()
+      fetchBandwidthUsage()
     ]);
   };
 
   const fetchVideos = async () => {
     const start = currentPage * limit;
     const result = await callApi(async () => {
+      const token = sessionStorage.getItem('authToken');
       const response = await fetch(`${process.env.NEXT_PUBLIC_VIDEO_SERVICE_URL}/api/videos/stream?start=${start}`, {
         method: 'GET',
-        credentials: 'include',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+        },
+        //credentials: 'include',
       });
       if (!response.ok) throw new Error('Failed to fetch videos');
       return response.json();
@@ -67,10 +89,10 @@ export default function Dashboard() {
       const token = sessionStorage.getItem('authToken');
       const response = await fetch(`${process.env.NEXT_PUBLIC_STORAGE_SERVICE_URL}/api/storage/usage`, {
         method: 'GET',
-        //credentials: 'include',
         headers: {
           'Authorization': `Bearer ${token}`,
-      },
+        },
+        //credentials: 'include',
       });
       if (!response.ok) throw new Error('Failed to fetch storage usage');
       return response.json();
@@ -80,9 +102,13 @@ export default function Dashboard() {
 
   const fetchBandwidthUsage = async () => {
     const result = await callApi(async () => {
+      const token = sessionStorage.getItem('authToken');
       const response = await fetch(`${process.env.NEXT_PUBLIC_USAGE_SERVICE_URL}/api/usage/daily-usage`, {
         method: 'GET',
-        credentials: 'include',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+        },
+        //credentials: 'include',
       });
       if (!response.ok) throw new Error('Failed to fetch bandwidth usage');
       return response.json();

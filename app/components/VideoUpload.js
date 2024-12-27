@@ -44,10 +44,14 @@ export default function VideoUpload({ onUploadSuccess, storageUsage, bandwidthUs
     formData.append('title', title);
 
     try {
+      const token = sessionStorage.getItem('authToken');
       const response = await fetch(`${process.env.NEXT_PUBLIC_VIDEO_SERVICE_URL}/api/videos/upload`, {
         method: 'POST',
         body: formData,
-        credentials: 'include', // Include cookies for token validation
+        headers: {
+          'Authorization': `Bearer ${token}`,
+        },
+        //credentials: 'include', // Include cookies for token validation
       });
 
       if (response.ok) {
