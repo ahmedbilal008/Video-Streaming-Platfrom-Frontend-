@@ -86,7 +86,7 @@ function LogsContent() {
             <Navbar currentPage="logs"/>
 
             <main className="max-w-6xl mx-auto mt-6 p-6">
-                <h1 className="text-3xl font-bold mb-6">System Logs</h1>
+                <h1 className="text-3xl font-bold mb-6">Activity Logs</h1>
                 <div className="flex justify-between items-center mb-4">
                     <button
                         onClick={handlePrevPage}
