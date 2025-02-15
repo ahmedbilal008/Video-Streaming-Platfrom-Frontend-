@@ -17,13 +17,13 @@ Welcome to the frontend repository of the **Video Streaming Application**! This 
 
 ## 📖 Table of Contents
 
-- [Project Overview](#project-overview)
-- [Features](#features)
-- [Tech Stack](#tech-stack)
-- [Getting Started](#getting-started)
-- [Architecture Overview](#architecture-overview)
-- [Frontend UI Screenshots](#frontend-ui-screenshots)
-- [Conclusion](#conclusion)
+- [Project Overview](#-project-overview)
+- [Features](#-features)
+- [Tech Stack](#-tech-stack)
+- [Getting Started](#-getting-started)
+- [Architecture Overview](#-architecture-overview)
+- [Frontend UI Screenshots](#-frontend-ui-screenshots)
+- [Conclusion](#-conclusion)
 
 ---
 
