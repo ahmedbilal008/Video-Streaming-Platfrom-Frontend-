@@ -35,7 +35,7 @@ export default function Dashboard() {
   
       // Decode JWT payload (base64-decode)
       const decodedToken = JSON.parse(atob(token.split('.')[1]));
-      const now = Math.floor(Date.now() / 1000); // Current time in seconds
+      const now = Math.floor(Date.now() / 1000); 
       if (decodedToken.exp && decodedToken.exp < now) {
         router.push('/');
       }

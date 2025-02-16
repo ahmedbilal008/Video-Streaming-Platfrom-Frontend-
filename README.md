@@ -1,6 +1,4 @@
-### Frontend README
-
-# Video Streaming Application - Frontend 🚀
+# Video Streaming Application - Frontend 
 
 Welcome to the frontend repository of the **Video Streaming Application**! This project is a cloud-based short video streaming platform built with **Next.js**. It provides an intuitive, responsive user interface that allows users to upload, manage, and view videos seamlessly. The frontend communicates with various backend microservices for user authentication, video management, logging, and more—ensuring a robust and scalable streaming experience.
 
@@ -85,21 +83,22 @@ The frontend is built with **Next.js** and communicates with a suite of backend 
 4. The **Storage Service** monitors and manages user storage quotas.
 5. The **Usage Service** enforces bandwidth and usage limits.
 ### Application Architecture
-![Login](public/images/architecture.jpg)
+<img src="public/images/architecture.jpg" alt="Login" width="500"> 
 
 ---
 ## 🖼 Frontend UI Screenshots
-### Login Page
-![Login](public/images/login.jpg)
+### Login  
+<img src="public/images/login.jpg" alt="Login" width="400">  
 
-### Dashboard
-![Dashboard](public/images/dashboard.jpg)
+### Dashboard  
+<img src="public/images/dashboard.jpg" alt="Dashboard" width="400">  
 
-### User Logs
-![Logs](public/images/logs.jpg)
+### User Logs  
+<img src="public/images/logs.jpg" alt="Logs" width="400">  
 
-### Profile
-![Profile](public/images/profile.jpg)
+### Profile  
+<img src="public/images/profile.jpg" alt="Profile" width="400">  
+
 
 ---
 

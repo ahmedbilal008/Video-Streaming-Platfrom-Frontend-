@@ -2,12 +2,12 @@
 
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
-import { useRouter } from 'next/navigation'; // Import useRouter for navigation
+import { useRouter } from 'next/navigation'; 
 
 const Navbar = ({ currentPage }) => {
   const [user, setUser] = useState(null);
   const [error, setError] = useState(null);
-  const router = useRouter(); // Initialize router for programmatic navigation
+  const router = useRouter(); 
 
   // // Logout Function
   // const handleLogout = async () => {
@@ -29,7 +29,7 @@ const Navbar = ({ currentPage }) => {
 
   const handleLogout = () => {
     sessionStorage.removeItem('authToken'); // Clear token from session storage
-    router.push('/'); // Redirect to the login page
+    router.push('/'); 
   };
   
   // // Fetch user data from cookie (JWT token)
@@ -57,7 +57,6 @@ const Navbar = ({ currentPage }) => {
       const token = sessionStorage.getItem('authToken'); // Retrieve token from session storage
   
       if (token) {
-        // Decode the JWT payload (base64-decode)
         const decodedToken = JSON.parse(atob(token.split('.')[1]));
         setUser({ id: decodedToken.id, username: decodedToken.email }); // Update the user state
       } else {
@@ -114,7 +113,6 @@ const Navbar = ({ currentPage }) => {
             </Link>
           </div>
 
-          {/* Logout Button */}
           <div className="flex items-center space-x-3">
             <button
               onClick={handleLogout} // Directly use the logout function
